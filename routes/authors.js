@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Author = require("../models/author");
-const author = require("../models/author");
 
 //all authors router
 router.get("/", async (req, res) => {
@@ -23,6 +22,7 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     // 确定传的参是 name， 不是id 或其他
   });
+
   const locals = { errorMessage: "something went wrong" };
   try {
     const createAuthor = await author.save();
