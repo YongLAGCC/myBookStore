@@ -3,4 +3,8 @@ get obj. // eg. body.name() // ejs 中， 写进的<%%> 中的， 都会以html 
 display -->
 
 <label>Name</label>
-<input type="text" name="name" value="<%= author.name%>" />
+<input type="text" name="name" value="<%=author.name%>"" >
+
+<!-- name is how our server get the data from the object, when server send whatever is input under the input ; when get it back from our server, we will build a call "body.name" ->   is hte value of the inpt0u in our server. -->
+
+<!-- <%= %>  whatever in this bracket, wiill be HTML to the page -->
