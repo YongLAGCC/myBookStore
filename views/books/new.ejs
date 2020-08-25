@@ -1,0 +1,8 @@
+<h2>new Book</h2>
+<form action="/books" method="POST" enctype="multipart/form-data">
+  <%- include('_for_form_field') %>
+  <a href="/books">Cancel</a>
+  <button type="submit">Create</button>
+</form>
+
+<!-- upload file: here multipart/form-data: which tell the server htat willl use multipe platform file, 2: chanage book model, 3, router change, to find the path where will be upload( public, see model file)  -->

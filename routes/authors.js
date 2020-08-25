@@ -4,19 +4,19 @@ const Author = require("../models/author");
 
 //all authors router
 router.get("/", async (req, res) => {
-  const searchOptions = {};
+  let searchOptions = {}
   if (req.query.name !== null && req.query.name !== "") {
     searchOptions.name = new RegExp(req.query.name, "i");
     // i is case insensitive
   }
   try {
     // display and find one user from mongodb
-    const authors = await Author.find(searchOptions); // empty means all authors, then pass into the index page by
+    const authors = await Author.find(searchOptions) // empty means all authors, then pass into the index page by
     res.render("authors/index", {
       authors: authors,
-      searchOptions: req.query,
+      searchOptions: req.query
       // send back to user in input value
-    });
+    })
   } catch {
     // if something wrong, we go to home page.
     res.redirect("/");
@@ -31,12 +31,12 @@ router.get("/new", (req, res) => {
 //create author router
 router.post("/", async (req, res) => {
   const author = new Author({
-    name: req.body.name,
+    name: req.body.name
     // 确定传的参是 name， 不是id 或其他
   });
   const locals = { errorMessage: "something went wrong" };
   try {
-    const createAuthor = await author.save();
+    const newAuthor = await author.save();
     // mongoose is async, wait till save complete, then poplute the createAuthor variable
     //res.redirect(`authors/${newAuthor.id}`)
     res.render(`authors`, locals);
