@@ -20,7 +20,16 @@ const upload = multer({
 
 //all books router
 router.get("/", async (req, res) => {
-  res.send("All books")
+  try {
+    let books = await Book.find({})
+    res.render('books/index', {
+      books: books,
+      search: req.query
+    })
+  } catch {
+    res.redirect("/")
+  }
+
 });
 
 //new book router

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 //schema
+const path = require('path')
 
 const coverImageBasePath = 'uploads/bookCovers'
 const bookSchema = new mongoose.Schema({
@@ -36,6 +37,15 @@ const bookSchema = new mongoose.Schema({
     // tell that have to match Author collecton name, that in author's export name.
   }
 });
+
+// virtual perproty fund 可以derive 其中变量的值。
+bookSchema.virtual("coverImagePath").get(function () {
+  // 必须用funciton， 不能用=> 去得到this
+  if (this.coverImageName != null) {
+    return path.join("/", coverImageBasePath, this.coverImageName)
+    // return  路径 path 和 有名字。 
+  }
+})
 
 module.exports = mongoose.model("Book", bookSchema);
 module.exports.coverImageBasePath = coverImageBasePath
