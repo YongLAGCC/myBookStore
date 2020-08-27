@@ -20,11 +20,24 @@ const upload = multer({
 
 //all books router
 router.get("/", async (req, res) => {
+  let query = Book.find()
+  if (req.query.title != null && req.query.title != '') {
+    query = query.regex('title', new RegExp(req.query.title, 'i'))
+  }
+
+  if (req.query.publishedBefore != null && req.query.publishedBefore != "") {
+    query = query.lte('publishDate', req.query.publishedBefore)
+  }
+  if (req.query.publishedAfter != null && req.query.publishedAfter != "") {
+    query = query.gte('publishDate', req.query.publishedAfter)
+  }
+
+
   try {
-    let books = await Book.find({})
+    let books = await query.exec()
     res.render('books/index', {
       books: books,
-      search: req.query
+      searchOptions: req.query
     })
   } catch {
     res.redirect("/")
@@ -53,7 +66,7 @@ router.post("/", upload.single('cover'), async (req, res) => {
   try {
     const newBook = await book.save()
     // res.redirect(`books/${newBook.id}`)
-    res.redirect("books")
+    res.redirect('books')
 
   } catch {
     // 如果 存储book 有错误，立刻断开 image的储存地址
@@ -64,8 +77,8 @@ router.post("/", upload.single('cover'), async (req, res) => {
   }
 });
 
-function removeBookCover(filename) {
-  fs.unlink(path.join(uploadPath, filename), err => {
+function removeBookCover(fileName) {
+  fs.unlink(path.join(uploadPath, fileName), err => {
     if (err) console.error(err)
   })
 }

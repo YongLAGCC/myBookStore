@@ -6,7 +6,7 @@
 <div>
   <label>Author</label>
   <select name="author">
-
+    <!-- loop authors in server instead of search from db as this is asyn -->
     <% authors.forEach(author => { %>
     <% if(author.id === book.author) { %>
     <option selectd label="<%= author.name %>" value="<%= author.id %>">

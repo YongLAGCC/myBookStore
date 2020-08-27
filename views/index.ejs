@@ -1,1 +1,10 @@
-Middle
+<h2>Recently Added</h2>
+
+<div>
+  <!-- 在mudel 中建立一个virtual perproty for path -->
+  <% books.forEach(book => { %>
+  <img height="160" width="105" src="<%= book.coverImagePath %>">
+
+  <% })%>
+
+</div>

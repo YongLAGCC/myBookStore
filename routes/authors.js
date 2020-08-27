@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
   try {
     // display and find one user from mongodb
     const authors = await Author.find(searchOptions) // empty means all authors, then pass into the index page by
-    res.render("authors/index", {
+    res.render('authors/index', {
       authors: authors,
       searchOptions: req.query
       // send back to user in input value

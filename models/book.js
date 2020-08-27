@@ -20,7 +20,7 @@ const bookSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  createAt: {
+  createdAt: {
     type: Date,
     required: true,
     default: Date.now
@@ -39,13 +39,13 @@ const bookSchema = new mongoose.Schema({
 });
 
 // virtual perproty fund 可以derive 其中变量的值。
-bookSchema.virtual("coverImagePath").get(function () {
+bookSchema.virtual('coverImagePath').get(function () {
   // 必须用funciton， 不能用=> 去得到this
   if (this.coverImageName != null) {
     return path.join("/", coverImageBasePath, this.coverImageName)
-    // return  路径 path 和 有名字。 
+    // return  路径public folder path 和 有名字。 可以直接在index.jes 里用
   }
 })
 
-module.exports = mongoose.model("Book", bookSchema);
+module.exports = mongoose.model('Book', bookSchema);
 module.exports.coverImageBasePath = coverImageBasePath
