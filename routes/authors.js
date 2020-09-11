@@ -34,12 +34,12 @@ router.post("/", async (req, res) => {
     name: req.body.name
     // 确定传的参是 name， 不是id 或其他
   });
-  const locals = { errorMessage: "something went wrong" };
+
   try {
     const newAuthor = await author.save();
     // mongoose is async, wait till save complete, then poplute the createAuthor variable
-    //res.redirect(`authors/${newAuthor.id}`)
-    res.render(`authors`, locals);
+    res.redirect(`authors/${newAuthor.id}`)
+
   } catch {
     res.render("authors/new", {
       author: author,
@@ -61,4 +61,43 @@ router.post("/", async (req, res) => {
 // res.send(req.body.name);
 // });
 
+router.get('/:id', (req, res) => {
+  res.send('Show Author ' + req.params.id)
+})
+
+router.get('/:id', async (req, res) => {
+  try {
+    const author = await Author.findById(req.params.id)
+    res.render("authors/edit", { author: author });
+  } catch {
+    res.redirect('/authors')
+  }
+})
+
+router.put('/:id', async (req, res) => {
+
+  let author
+  try {
+    author = await Author.findById(req.params.id)
+    // update 后 改一下， 存到数据库
+    author.name = req.body.name
+    await author.save()
+    // mongoose is async, wait till save complete, then poplute the createAuthor variable
+    res.redirect(`/authors/${author.id}`)
+
+  } catch {
+    if (author == null)
+      res.redirect('/')
+    else {
+      res.render("authors/edit", {
+        author: author,
+        errorMessage: "Error udating Author",
+      });
+    }
+  }
+})
+
+router.delete('/:id', (req, res) => {
+  res.send('Delete Author ' + req.params.id)
+})
 module.exports = router;

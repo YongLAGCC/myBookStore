@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const bodyParser = require("body-parser");
+const methodOverride = require('method-override')
 
 const indexRouter = require("./routes/index");
 const authorRouter = require("./routes/authors");
@@ -16,6 +17,7 @@ app.set("view engine", "ejs"); // view engine we use
 app.set("views", __dirname + "/views"); // tell the dir
 app.set("layout", "layouts/layout"); // tell where the view layouts
 app.use(expressLayouts); // tell app to use expressLay
+app.use(methodOverride('_method')) // for use update and delete route
 app.use(express.static("public")); // tell where public view is
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: false })); // js cannont 传餐 到json
 

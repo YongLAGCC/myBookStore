@@ -7,7 +7,7 @@ const fs = require('fs');
 const Book = require("../models/book");
 const Author = require("../models/author");
 
-// where at be uploaded the file, the path (combined) from public to book.coverImage .. 
+// where at be uploaded the file, the path (combined) from public to book.coverImage ..  Uploaded to book model and save it in image foler
 const uploadPath = path.join('public', Book.coverImageBasePath)
 //what file will accept
 const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
