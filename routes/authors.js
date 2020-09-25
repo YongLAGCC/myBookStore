@@ -65,7 +65,7 @@ router.get('/:id', (req, res) => {
   res.send('Show Author ' + req.params.id)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id/edit', async (req, res) => {
   try {
     const author = await Author.findById(req.params.id)
     res.render("authors/edit", { author: author });
@@ -74,8 +74,10 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+// little differ with post method: 
 router.put('/:id', async (req, res) => {
-
+  // create new var to try to find the id fro db
+  // catch method has to use same var
   let author
   try {
     author = await Author.findById(req.params.id)
@@ -83,12 +85,14 @@ router.put('/:id', async (req, res) => {
     author.name = req.body.name
     await author.save()
     // mongoose is async, wait till save complete, then poplute the createAuthor variable
-    res.redirect(`/authors/${author.id}`)
+    res.redirect(`/authors/${author.id}`) // 必须加/， 表示root， 否则就 是relative 地址了。 
 
   } catch {
+    // if author == null means failed in try block
     if (author == null)
       res.redirect('/')
     else {
+      // if valid, direct to edit page
       res.render("authors/edit", {
         author: author,
         errorMessage: "Error udating Author",
@@ -96,8 +100,29 @@ router.put('/:id', async (req, res) => {
     }
   }
 })
+// delete route 跟 update 差不多。 
+// 但是还要delete 掉 相关的 book。 
+router.delete('/:id', async (req, res) => {
 
-router.delete('/:id', (req, res) => {
-  res.send('Delete Author ' + req.params.id)
+  let author
+  try {
+    author = await Author.findById(req.params.id)
+    // update 后 改一下， 存到数据库
+    //  author.name = req.body.name 
+    await author.remove()
+    // mongoose is async, wait till save complete, then poplute the createAuthor variable
+    res.redirect('/authors') // 必须加/， 表示root， 否则就 是relative 地址了。 
+
+  } catch {
+    // if author == null means failed in try block
+    if (author == null) {
+      res.redirect('/')
+    } else {
+      // if valid, direct to edit page
+      res.redirect(`/authors/${author.id}`)
+    }
+  }
+  // 删除的时候记得 还有book 相连。 去data 那边做处理
+
 })
 module.exports = router;

@@ -11,6 +11,8 @@
   <div><%= author.name %></div>
   <a href="/authors/<%= author.id %>">View</a>
   <a href="/authors/<%= author.id %>/edit">Edit</a>
+
+  <!-- // use form to delete something, avoid it happened many times. -->
   <%- include('../partials/deleteForm', 
     { url: `/authors/${author.id}` }) %>
 
